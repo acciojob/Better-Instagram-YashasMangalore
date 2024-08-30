@@ -1,45 +1,54 @@
-//your code here
 document.addEventListener('DOMContentLoaded', () => {
-  const images = document.querySelectorAll('.image');
-  
-  let draggedElement = null;
+    const images = document.querySelectorAll('.image');
 
-  images.forEach(image => {
-    image.addEventListener('dragstart', (e) => {
-      draggedElement = e.target;
-      setTimeout(() => {
-        e.target.style.display = 'none';
-      }, 0);
-    });
+    let draggedElement = null;
 
-    image.addEventListener('dragend', (e) => {
-      setTimeout(() => {
-        draggedElement.style.display = 'block';
-        draggedElement = null;
-      }, 0);
-    });
+    images.forEach(image => {
+        image.addEventListener('dragstart', (e) => {
+            draggedElement = e.target;
+            setTimeout(() => {
+                e.target.style.opacity = '0.5'; // Visual feedback for dragging
+            }, 0);
+        });
 
-    image.addEventListener('dragover', (e) => {
-      e.preventDefault();
-    });
+        image.addEventListener('dragend', (e) => {
+            setTimeout(() => {
+                e.target.style.opacity = '1'; // Restore opacity
+                draggedElement = null;
+            }, 0);
+        });
 
-    image.addEventListener('dragenter', (e) => {
-      e.preventDefault();
-      e.target.classList.add('selected');
-    });
+        image.addEventListener('dragover', (e) => {
+            e.preventDefault(); // Allow dropping
+        });
 
-    image.addEventListener('dragleave', (e) => {
-      e.target.classList.remove('selected');
-    });
+        image.addEventListener('dragenter', (e) => {
+            e.preventDefault();
+            if (e.target.classList.contains('image')) {
+                e.target.classList.add('selected'); // Highlight target element
+            }
+        });
 
-    image.addEventListener('drop', (e) => {
-      e.preventDefault();
-      e.target.classList.remove('selected');
-      if (e.target !== draggedElement) {
-        const tempContent = e.target.innerHTML;
-        e.target.innerHTML = draggedElement.innerHTML;
-        draggedElement.innerHTML = tempContent;
-      }
+        image.addEventListener('dragleave', (e) => {
+            if (e.target.classList.contains('image')) {
+                e.target.classList.remove('selected'); // Remove highlight
+            }
+        });
+
+        image.addEventListener('drop', (e) => {
+            e.preventDefault();
+            if (e.target !== draggedElement && e.target.classList.contains('image')) {
+                e.target.classList.remove('selected'); // Remove highlight
+
+                // Swap image URLs while preserving text
+                const tempImgUrl = e.target.dataset.img;
+                e.target.dataset.img = draggedElement.dataset.img;
+                draggedElement.dataset.img = tempImgUrl;
+
+                // Update background images
+                e.target.style.backgroundImage = `url(${e.target.dataset.img})`;
+                draggedElement.style.backgroundImage = `url(${draggedElement.dataset.img})`;
+            }
+        });
     });
-  });
 });
