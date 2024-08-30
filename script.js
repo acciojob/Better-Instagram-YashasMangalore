@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     const images = document.querySelectorAll('.image');
-
     let draggedElement = null;
 
     images.forEach(image => {
@@ -40,14 +39,25 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.target !== draggedElement && e.target.classList.contains('image')) {
                 e.target.classList.remove('selected'); // Remove highlight
 
-                // Swap image URLs while preserving text
-                const tempImgUrl = e.target.dataset.img;
-                e.target.dataset.img = draggedElement.dataset.img;
-                draggedElement.dataset.img = tempImgUrl;
+                // Swap the entire content and attributes of the div
+                const draggedHTML = draggedElement.innerHTML;
+                const targetHTML = e.target.innerHTML;
+                const draggedStyle = draggedElement.style.backgroundImage;
+                const targetStyle = e.target.style.backgroundImage;
+                const draggedData = { ...draggedElement.dataset }; // Save data attributes of dragged element
+                const targetData = { ...e.target.dataset }; // Save data attributes of target element
 
-                // Update background images
-                e.target.style.backgroundImage = `url(${e.target.dataset.img})`;
-                draggedElement.style.backgroundImage = `url(${draggedElement.dataset.img})`;
+                // Swap HTML content
+                draggedElement.innerHTML = targetHTML;
+                e.target.innerHTML = draggedHTML;
+
+                // Swap background images
+                draggedElement.style.backgroundImage = targetStyle;
+                e.target.style.backgroundImage = draggedStyle;
+
+                // Swap data attributes
+                draggedElement.dataset = targetData;
+                e.target.dataset = draggedData;
             }
         });
     });
