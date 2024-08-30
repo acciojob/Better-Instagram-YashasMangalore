@@ -1,14 +1,9 @@
-.image {
+#div1, #div2, #div3, #div4, #div5, #div6 {
     height: 300px;
     width: 200px;
     margin: 20px;
     background-size: cover;
     background-position: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: bold;
 }
 
 #div1 { background-image: url("https://picsum.photos/id/237/200/300"); }

@@ -42,22 +42,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Swap the entire content and attributes of the div
                 const draggedHTML = draggedElement.innerHTML;
                 const targetHTML = e.target.innerHTML;
-                const draggedStyle = draggedElement.style.backgroundImage;
-                const targetStyle = e.target.style.backgroundImage;
-                const draggedData = { ...draggedElement.dataset }; // Save data attributes of dragged element
-                const targetData = { ...e.target.dataset }; // Save data attributes of target element
+                const draggedAttributes = { ...draggedElement.dataset }; // Save attributes of dragged element
+                const targetAttributes = { ...e.target.dataset }; // Save attributes of target element
 
                 // Swap HTML content
                 draggedElement.innerHTML = targetHTML;
                 e.target.innerHTML = draggedHTML;
 
-                // Swap background images
-                draggedElement.style.backgroundImage = targetStyle;
-                e.target.style.backgroundImage = draggedStyle;
+                // Swap attributes
+                draggedElement.dataset = targetAttributes;
+                e.target.dataset = draggedAttributes;
 
-                // Swap data attributes
-                draggedElement.dataset = targetData;
-                e.target.dataset = draggedData;
+                // Swap background images
+                const draggedImgUrl = draggedElement.style.backgroundImage;
+                const targetImgUrl = e.target.style.backgroundImage;
+                draggedElement.style.backgroundImage = targetImgUrl;
+                e.target.style.backgroundImage = draggedImgUrl;
             }
         });
     });
